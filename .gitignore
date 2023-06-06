@@ -11,6 +11,9 @@
 # production
 /build
 
+# api keys
+/stable-diffusion/.env
+
 # misc
 .DS_Store
 .env.local
