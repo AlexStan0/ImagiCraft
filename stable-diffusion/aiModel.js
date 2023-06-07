@@ -21,6 +21,7 @@ class aiModel {
     #apiKey;
     #model;
     #modelCode;
+    #username;
     #replicate;
 
     /**
@@ -29,12 +30,13 @@ class aiModel {
      * @param {string} model name of stable-diffusion model that is going to be used
      * @param {string} modelCode special serial code for each model
      */
-    constructor(apiKey, model, modelCode) {
+    constructor(apiKey, model, modelCode, username) {
 
         //set the local attributes to the ones the user provided
         this.#apiKey = apiKey;
         this.#model = model;
         this.#modelCode = modelCode;
+        this.#username = username;
 
         //create the API Connection for the model
         this.#createReplicate();
@@ -51,6 +53,10 @@ class aiModel {
     //create a getter and setter for the model code
     setModelCode = newCode => this.#modelCode = newCode;
     getModelCode = () => this.#modelCode;
+
+    //create a getter and setter for the username
+    setUsername = newUsername => this.#username = newUsername;
+    getUsername = () => this.#username;
 
     /**
      * @private 
