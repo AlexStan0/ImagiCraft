@@ -12,7 +12,7 @@
 /build
 
 # api keys
-/stable-diffusion/.env
+.env
 
 # misc
 .DS_Store
