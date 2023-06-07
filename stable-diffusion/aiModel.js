@@ -67,4 +67,4 @@ class aiModel {
 
 } //end trainingModel
 
-export default trainingModel;
+export default aiModel;
