@@ -9,6 +9,8 @@
 
 //import dependencies
 import Replicate from 'replicate';
+import fileUrl from 'file-url';
+import fs from 'fs';
 
 /**
  * Generic training class to train the AI
@@ -30,12 +32,11 @@ class aiModel {
      * @param {string} model name of stable-diffusion model that is going to be used
      * @param {string} modelCode special serial code for each model
      */
-    constructor(apiKey, model, trainerVersion, username) {
+    constructor(apiKey, model, username) {
 
         //set the local attributes to the ones the user provided
         this.#apiKey = apiKey;
         this.#model = model;
-        this.#modelCode = modelCode;
         this.#username = username;
 
         //create the API Connection for the model
@@ -49,10 +50,6 @@ class aiModel {
     //create a getter and setter for the ai-model
     setModel = newModel => this.#model = newModel;
     getModel = () => this.#model;
-
-    //create a getter and setter for the model code
-    setTrainerVersion = newTrainerVersion => this.#trainerVersion = newTrainerVersion;
-    getTrainerVersion = () => this.#trainerVersion;
 
     //create a getter and setter for the username
     setUsername = newUsername => this.#username = newUsername;
@@ -71,11 +68,28 @@ class aiModel {
 
     } //end createReplicate()
 
+    getData = (filePath, instance_prompt, class_prompt) => {
+
+
+        //TODO: create urls for the filePaths and ship them out in an object
+        //ensure that the filePath is valid 
+
+
+        //create file URL based on the file path provided
+
+    } //end getData()
+
     trainModel = (options) => {
 
         this.#replicate();
 
     } //end trainModel()
+
+    isFile = async path => {
+
+        //TODO: ensure that provided filePaths are valid and return it
+
+    } //end isFile()
 
 } //end trainingModel
 
