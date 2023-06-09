@@ -20,7 +20,7 @@ class aiModel {
     //declare global variables for the class
     #apiKey;
     #model;
-    #modelCode;
+    #trainerVersion;
     #username;
     #replicate;
 
@@ -30,7 +30,7 @@ class aiModel {
      * @param {string} model name of stable-diffusion model that is going to be used
      * @param {string} modelCode special serial code for each model
      */
-    constructor(apiKey, model, modelCode, username) {
+    constructor(apiKey, model, trainerVersion, username) {
 
         //set the local attributes to the ones the user provided
         this.#apiKey = apiKey;
@@ -51,8 +51,8 @@ class aiModel {
     getModel = () => this.#model;
 
     //create a getter and setter for the model code
-    setModelCode = newCode => this.#modelCode = newCode;
-    getModelCode = () => this.#modelCode;
+    setTrainerVersion = newTrainerVersion => this.#trainerVersion = newTrainerVersion;
+    getTrainerVersion = () => this.#trainerVersion;
 
     //create a getter and setter for the username
     setUsername = newUsername => this.#username = newUsername;
@@ -70,6 +70,12 @@ class aiModel {
         });
 
     } //end createReplicate()
+
+    trainModel = (options) => {
+
+        this.#replicate();
+
+    } //end trainModel()
 
 } //end trainingModel
 
