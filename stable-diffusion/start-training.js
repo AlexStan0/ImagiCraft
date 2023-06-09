@@ -10,4 +10,4 @@ const username = "alexstan0";
 
 let model = new aiModel(apiKey, modelType, modelCode, username);
 
-console.log(model.getModel());
+model.trainModel("/home/alexa/data/archive.zip", "photos of cjw people", "photos of people", 532);
