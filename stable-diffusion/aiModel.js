@@ -9,8 +9,7 @@
 
 //import dependencies
 import Replicate from 'replicate';
-import fileUrl from 'file-url';
-import fetch from 'cross-fetch';
+import fs from 'fs';
 
 /**
  * Generic training class to train the AI
@@ -64,72 +63,48 @@ class aiModel {
 
         //declare a new connection to the dreambooth API via replicate
         this.#replicate = new Replicate({
-            auth: this.#apiKey,
-            fetch: fetch
+            auth: this.#apiKey
         });
 
     } //end createReplicate()
 
     /**
-     * Generates the proper training options to pass to the 
-     * @param {string} filePath path to the training data
-     * @param {string} instancePrompt descriptor of the data set with a rare token (i.e: cjw)
-     * @param {string} classPrompt descriptor of the data set
-     * @param  {...number} maxTrainSteps optional max number of training steps
-     * @throws Error when file path or file extension are invalid
-     * @returns object with training options
+     * Uploads files using the Replicate API
+     * @param {...string} filePaths paths to the zip files to be uploaded
      */
-    #createTrainingOptions(filePath, instancePrompt, classPrompt, ...maxTrainSteps) {
+    uploadData = (...filePaths) => {
 
-        //create a JS object to store the training options
-        let trainingOptions = {
-            instance_prompt: instancePrompt,
-            class_prompt: classPrompt,
-            instance_data: "",
-            max_train_steps: 500
-        }
+        //create a path variable for the SH script to upload the data
+        const scriptPath = "upload.sh"
 
-        //check that there is only one parameter in the optional max_train_steps var arg
-        maxTrainSteps.length == 1 ? trainingOptions.max_train_steps = maxTrainSteps[0] : trainingOptions.max_train_steps = 500;
+        //ensure that there are file paths provided
+        if(!filePaths.length) throw new Error("Please Provide [A] Valid File Path(s)");
 
-        //get the file extension of the file
-        const ext = filePath
-            .split('.')
-            .filter(Boolean)
-            .slice(1)
-            .join('.')
+            for(let i = 0; i < filePaths.length; ++i) {
 
-        //throw exception if the file is invalid
-        if(ext != "zip") throw Error("Invalid File Path/File Extension");
+                const path = filePaths[i];
 
-        //create a fileURL for the data set 
-        let fUrl = fileUrl(filePath);
+                const stream = fs.createWriteStream("./upload.sh");
 
-        //append the fileURL to the training options
-        trainingOptions["instance_data"] = fUrl;
+                const string = 'curl -X PUT -H "Content-Type: application/zip" --upload-file ' + path + ' "$(jq -r ".upload_url" <<< "$RESPONSE")"\n';
 
-        return trainingOptions;
+                stream.once('open', () => {
+                    stream.write('RESPONSE=$(curl -X POST -H "Authorization: Token $REPLICATE_API_TOKEN" https://dreambooth-api-experimental.replicate.com/v1/upload/data.zip)\n');
+                    stream.write(string);
+                    stream.write('SERVING_URL=$(jq -r ".serving_url" <<< $RESPONSE)\n');
+                })
 
-    } //end getData()
-
-    trainModel = async (filePath, instancePrompt, classPrompt, ...maxTrainSteps) => {
-
-        //create the training options for the training call
-        let inputOptions = this.#createTrainingOptions(filePath, instancePrompt, classPrompt, ...maxTrainSteps);
-
-        const response = this.#replicate.trainings.create(
-
-            "ai-forever/kandinsky-2:601eea49d49003e6ea75a11527209c4f510a93e2112c969d548fbb45b9c4f19f",
-            {
-
-            },
+            } //end for-loop 'i'
             
+    } //end uploadData()
 
-        );
+    /**
+     * Make sure that the data provided is in a valid format
+     * @param {string} filePath path to the data set file
+     */
+    #checkExtension(filePath) {
 
-        
-
-    } //end trainModel()
+    } //end checkExtension()
 
 } //end trainingModel
 
