@@ -10,6 +10,7 @@
 //import dependencies
 import Replicate from 'replicate';
 import fileUrl from 'file-url';
+import fetch from 'cross-fetch';
 
 /**
  * Generic training class to train the AI
@@ -21,7 +22,7 @@ class aiModel {
     //declare global variables for the class
     #apiKey;
     #model;
-    #trainerVersion;
+    #model_version;
     #username;
     #replicate;
 
@@ -32,13 +33,13 @@ class aiModel {
      * @param {string} username username for the 
      * 
      */
-    constructor(apiKey, model, username, trainerVersion) {
+    constructor(apiKey, model, username, model_version) {
 
         //set the local attributes to the ones the user provided
         this.#apiKey = apiKey;
         this.#model = model;
         this.#username = username;
-        this.#trainerVersion = trainerVersion
+        this.#model_version = model_version;
 
         //create the API Connection for the model
         this.#createReplicate();
@@ -63,7 +64,8 @@ class aiModel {
 
         //declare a new connection to the dreambooth API via replicate
         this.#replicate = new Replicate({
-            auth: this.#apiKey
+            auth: this.#apiKey,
+            fetch: fetch
         });
 
     } //end createReplicate()
@@ -73,7 +75,7 @@ class aiModel {
      * @param {string} filePath path to the training data
      * @param {string} instancePrompt descriptor of the data set with a rare token (i.e: cjw)
      * @param {string} classPrompt descriptor of the data set
-     * @param  {...number} maxTrainSteps max number of training steps
+     * @param  {...number} maxTrainSteps optional max number of training steps
      * @throws Error when file path or file extension are invalid
      * @returns object with training options
      */
@@ -81,14 +83,14 @@ class aiModel {
 
         //create a JS object to store the training options
         let trainingOptions = {
-            "instance_prompt": instancePrompt,
-            "class_prompt": classPrompt,
-            "instance_data": "",
-            "max_train_steps": 500
+            instance_prompt: instancePrompt,
+            class_prompt: classPrompt,
+            instance_data: "",
+            max_train_steps: 500
         }
 
         //check that there is only one parameter in the optional max_train_steps var arg
-        if(maxTrainSteps.length == 1) trainingOptions['max_train_steps'] = maxTrainSteps[0]
+        maxTrainSteps.length == 1 ? trainingOptions.max_train_steps = maxTrainSteps[0] : trainingOptions.max_train_steps = 500;
 
         //get the file extension of the file
         const ext = filePath
@@ -110,10 +112,20 @@ class aiModel {
 
     } //end getData()
 
-    trainModel = (filePath, instancePrompt, classPrompt, ...maxTrainSteps) => {
+    trainModel = async (filePath, instancePrompt, classPrompt, ...maxTrainSteps) => {
 
         //create the training options for the training call
-        this.#createTrainingOptions(filePath, instancePrompt, classPrompt, ...maxTrainSteps);
+        let inputOptions = this.#createTrainingOptions(filePath, instancePrompt, classPrompt, ...maxTrainSteps);
+
+        const response = this.#replicate.trainings.create(
+
+            "ai-forever/kandinsky-2:601eea49d49003e6ea75a11527209c4f510a93e2112c969d548fbb45b9c4f19f",
+            {
+
+            },
+            
+
+        );
 
         
 

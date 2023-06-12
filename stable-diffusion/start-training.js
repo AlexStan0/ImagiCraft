@@ -4,10 +4,15 @@ import aiModel from "./aiModel.js";
 import 'dotenv/config';
 
 const apiKey = process.env.TOKEN;
-const modelType = "stability-ai";
-const modelCode = "stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf";
 const username = "alexstan0";
+const model = "kadinsky-2";
+const trainerVersion = "183eb80e7e10b93653f09c909ea0b762b6aef17c36b82165a01bdd42dc309c06";
 
-let model = new aiModel(apiKey, modelType, modelCode, username);
+const myModel = new aiModel(apiKey, model, username, trainerVersion);
 
-model.trainModel("/home/alexa/data/archive.zip", "photos of cjw people", "photos of people", 532);
+const filePath = "/mnt/c/Users/alexa/Downloads/peopleDataSet.zip";
+const instancePrompt = "photos of cjw people";
+const classPrompt = "photos of people";
+const maxSteps = 2000;
+
+myModel.trainModel(filePath, instancePrompt, classPrompt, maxSteps);
