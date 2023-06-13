@@ -109,6 +109,9 @@ class aiModel {
                 //run the upload script
                 let scriptOutput = this.#executeCommand("./upload.sh");
 
+                //remove the file after getting the output 
+                //fs.unlink(scriptPath);
+
                 //remove the '\n' from the end of the string
                 scriptOutput = scriptOutput.replace(/^\s+|\s+$/g, '');
 
@@ -120,6 +123,16 @@ class aiModel {
             return servingUrls;
             
     } //end uploadData()
+
+    /**
+     * Trains model with previously uploaded data
+     * @param {string[]} servingUrls HTTP urls for the uploaded data 
+     */
+    trainModel(servingUrls) {
+
+
+
+    } //end trainModel()
 
     /**
      * Executes a bash command 
