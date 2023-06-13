@@ -11,4 +11,5 @@ const trainerVersion = "183eb80e7e10b93653f09c909ea0b762b6aef17c36b82165a01bdd42
 const myModel = new aiModel(apiKey, model, username, trainerVersion);
 
 
-myModel.uploadData("/home/alexa/forknife-v5/stable-diffusion/upload.sh", "/home/alexa/Downloads/archive.zip");
+let arr = myModel.uploadData("/home/alexa/Downloads/archive.zip", "/home/alexa/Downloads/cars.zip");
+console.log(arr);

@@ -10,6 +10,8 @@
 //import dependencies
 import Replicate from 'replicate';
 import fs from 'fs';
+import path from 'path';
+import { spawnSync } from 'node:child_process';
 
 /**
  * Generic training class to train the AI
@@ -71,40 +73,89 @@ class aiModel {
     /**
      * Uploads files using the Replicate API
      * @param {...string} filePaths paths to the zip files to be uploaded
+     * @returns {string[]} serving URLs for the API 
      */
     uploadData = (...filePaths) => {
 
-        //create a path variable for the SH script to upload the data
-        const scriptPath = "upload.sh"
+        //create a variable that points to the sh script
+        const scriptPath = 'upload.sh'
+
+        //declare an empty array to store the serving urls for the uploaded files
+        const servingUrls = [];
 
         //ensure that there are file paths provided
         if(!filePaths.length) throw new Error("Please Provide [A] Valid File Path(s)");
 
-            for(let i = 0; i < filePaths.length; ++i) {
+            //loop through the filePaths provided and upload them
+            for(const filePath of filePaths) {
 
-                const path = filePaths[i];
+                //if the file is not a zip file, skip it
+                if(path.extname(filePath) != ".zip") continue;
 
-                const stream = fs.createWriteStream("./upload.sh");
+                //store the commands needed to upload the data
+                const commands = [
+                    'RESPONSE=$(curl -X POST -H "Authorization: Token ' + this.#apiKey + '" https://dreambooth-api-experimental.replicate.com/v1/upload/data.zip)\n',
+                    'curl -X PUT -H "Content-Type: application/zip" --upload-file ' + filePath + ' "$(jq -r ".upload_url" <<< "$RESPONSE")"\n',
+                    'SERVING_URL=$(jq -r ".serving_url" <<< $RESPONSE)\n',
+                    'echo $SERVING_URL'
+                ];
 
-                const string = 'curl -X PUT -H "Content-Type: application/zip" --upload-file ' + path + ' "$(jq -r ".upload_url" <<< "$RESPONSE")"\n';
+                //write the array of commands to the script file
+                this.#writeToFile(scriptPath, commands);
 
-                stream.once('open', () => {
-                    stream.write('RESPONSE=$(curl -X POST -H "Authorization: Token $REPLICATE_API_TOKEN" https://dreambooth-api-experimental.replicate.com/v1/upload/data.zip)\n');
-                    stream.write(string);
-                    stream.write('SERVING_URL=$(jq -r ".serving_url" <<< $RESPONSE)\n');
-                })
+                //allocate executable permissions to the file
+                this.#executeCommand('chmod +x upload.sh');
+
+                //run the upload script
+                let scriptOutput = this.#executeCommand("./upload.sh");
+
+                //remove the '\n' from the end of the string
+                scriptOutput = scriptOutput.replace(/^\s+|\s+$/g, '');
+
+                //add the serving url to the array of serving URLS
+                servingUrls.push(scriptOutput);
 
             } //end for-loop 'i'
+
+            return servingUrls;
             
     } //end uploadData()
 
     /**
-     * Make sure that the data provided is in a valid format
-     * @param {string} filePath path to the data set file
+     * Executes a bash command 
+     * @param {string} command what to execute
+     * @returns {string} output of the command if there is any
      */
-    #checkExtension(filePath) {
+    #executeCommand(command) {
 
-    } //end checkExtension()
+        //create an instance of the terminal and run the command provided
+        const runable = spawnSync(command);
+
+        //read the terminal Buffer output and convert it to a string
+        if(runable.stdout) return runable.stdout.toString();
+
+    } //end executeCommand()
+
+    /**
+     * Writes a message to a file
+     * @param {string} path where the file is located
+     * @param {string[]} messages what to write to the file
+     */
+    #writeToFile(path, messages) {
+
+        //create a write stream for the file
+        const stream = fs.createWriteStream(path);
+
+        //wait for the stream to be open to start writing
+        stream.once('open', () => {
+
+            //loop through array and write everything in it to the file
+            for(const message of messages) 
+                stream.write(message);
+
+        });
+
+    } //end writeToFile()
 
 } //end trainingModel
 

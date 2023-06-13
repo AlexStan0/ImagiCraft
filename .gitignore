@@ -14,7 +14,9 @@
 # api keys
 .env
 
-#training data
+#upload script
+/stable-diffusion/*.sh
+/stable-diffusion/*.S
 
 # misc
 .DS_Store
