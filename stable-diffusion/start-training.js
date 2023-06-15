@@ -5,12 +5,17 @@ import 'dotenv/config';
 
 const apiKey = process.env.TOKEN;
 const username = "alexstan0";
-const model = "kadinsky-2";
-const trainerVersion = "183eb80e7e10b93653f09c909ea0b762b6aef17c36b82165a01bdd42dc309c06";
+const model = "stable-diffusion-4";
+const modelVersion = "ecefcd352be5d778ed0d79b4a96f95bf543418d1c6979220753330529e4773fe";
+const trainerVersion = "d5e058608f43886b9620a8fbb1501853b8cbae4f45c857a014011c86ee614ffb";
 
-const myModel = new aiModel(apiKey, model, username, trainerVersion);
+const myModel = new aiModel(apiKey, model, username, modelVersion, trainerVersion);
 
 
-let arr = myModel.uploadData("/home/alexa/Downloads/archive.zip", "photos of cjw people", "photos of people");
-console.log(arr);
-myModel.trainModel(2000, arr);
+let cityscape = myModel.uploadData("/mnt/c/Users/alexa/Documents/Data/Cityscape.zip", "photos of slw city skylines", "photos of city skylines");
+let landscape = myModel.uploadData("/mnt/c/Users/alexa/Documents/Data/LandscapeSet.zip", "photos of slw city skylines", "photos of city skylines");
+
+console.log(cityscape);
+console.log(landscape);
+
+//myModel.trainModel(2000, cityscape, landscape);

@@ -35,11 +35,11 @@ class aiModel {
      * able to use the dreambooth API calls;
      * 
      * 
-     * @param {*} apiKey replicate.com auth token 
-     * @param {*} model the name of the model that is being used
-     * @param {*} username username of the account associated with the auth token
-     * @param {*} modelVersion model version that will be used to run predictions with
-     * @param {*} trainerVersion trainer version that will be used to train the model with
+     * @param {string} apiKey replicate.com auth token 
+     * @param {string} model the name of the model that is being used
+     * @param {string} username username of the account associated with the auth token
+     * @param {string} modelVersion model version that will be used to run predictions with
+     * @param {string} trainerVersion trainer version that will be used to train the model with
      */
     constructor(apiKey, model, username, modelVersion, trainerVersion) {
 
@@ -115,7 +115,7 @@ class aiModel {
         this.#writeToFile(scriptPath, commands);
 
         //allocate executable permissions to the file
-        this.#executeCommand('chmod +x upload.sh');
+        this.#executeCommand('chmod +x ~/forknife-v5/stable-diffusion/upload.sh');
 
         //run the upload script
         let scriptOutput = this.#executeCommand("./upload.sh");
@@ -136,47 +136,68 @@ class aiModel {
      * Make a training call to the replicate dreambooth API
      * @param {number} maxTrainSteps the number of training iterations
      * @param {...string[]} servingData data to create a training call with
+     * @returns an array of the training URLS to check the status of the training call with 
      */
     trainModel(maxTrainSteps = 2000, ...servingData) {
+
+        //create an array to store the id's of each training call
+        const trainingIds = [];
 
         //loop over all the data sets provided and train the model with them
         for(const data of servingData) {
 
             //make sure that the data set provided is valid. If it isn't, skip it
-            if(!(servingData.length === 3)) continue;
+            if(data.length !== 3) continue;
 
             //store the data inside the array in an appropriate variable
             const servingUrl = data[0];
             const instancePrompt = data[1];
             const classPrompt = data[2];
 
-            //create an object to store the input object located in the body of the API call
+            //create an object to store the input parameters unique to each training call
             const bodyInput = {
                 "instance_prompt": instancePrompt,
                 "class_prompt": classPrompt,
                 "instance_data": servingUrl,
                 "max_train_steps": maxTrainSteps
-            };
+            }
 
-            //create a training call to train the API using one of the provided data sets
-            fetch('https://dreambooth-api-experimental.replicate.com/v1/trainings', {
+            //store the api url as to avoid hardcoding
+            const apiUrl = 'https://dreambooth-api-experimental.replicate.com/v1/trainings';
+
+            //store the options for the training call
+            const requestOptions = {
 
                 method: 'POST',
-
                 headers: {
-                    'Authorization': 'Token ' + this.#apiKey,
+
+                    'Authorization': `Token ${this.#apiKey}`,
                     'Content-Type': 'application/json'
+
                 },
 
-                body: {
-                    "input": bodyInput,
-                    "model": `${this.username}/${this.model}`,
-                    "trainer_version": `${this.#trainerVersion}`
-                }
+                //convert the JSON object into a string to be passed through
+                body: JSON.stringify({
+
+                    input: bodyInput,
+                    'model': `${this.#username}/${this.#model}`,
+                    'trainer_version': `${this.#trainerVersion}`
+
+                })
+
+            } //end requestOptions
+
+            //create a training call 
+            fetch(apiUrl, requestOptions).then(response => {
+
+                    //add the training id to the training id array for the user to check the status later
+                    if(response.ok) trainingIds.push(response["id"]);    
 
             });
 
         } //end for-loop
+
+        return trainingIds
         
     } //end trainModel()
 
@@ -187,14 +208,14 @@ class aiModel {
      */
     #executeCommand(command) {
 
-        //create an instance of the terminal and run the command provided
-        const runable = spawnSync(command, {
-            shell: true
+        //create an instance of the command in the shell
+        const output = spawnSync(command, {
+            shell: '/bin/bash'
         });
 
-        //read the terminal Buffer output and convert it to a string
-        if(runable.stdout) return runable.stdout.toString();
-
+        //when any output is detected, return it
+        if(output.stdout) return output.stdout.toString(); 
+        
     } //end executeCommand()
 
     /**
@@ -217,6 +238,8 @@ class aiModel {
         });
 
     } //end writeToFile()
+
+    //TODO: Create a function to get a prediction (i.e generate an image based on user promt)
 
 } //end trainingModel
 
