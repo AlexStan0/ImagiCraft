@@ -18,4 +18,5 @@ let landscape = myModel.uploadData("/mnt/c/Users/alexa/Documents/Data/LandscapeS
 console.log(cityscape);
 console.log(landscape);
 
-//myModel.trainModel(2000, cityscape, landscape);
+let idArr = myModel.trainModel(2000, cityscape, landscape);
+myModel.checkTrainingStatus(...idArr);
