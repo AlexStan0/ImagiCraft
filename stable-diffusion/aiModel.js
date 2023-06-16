@@ -1,12 +1,4 @@
 
-/*
-* Name: Alexandru Stan
-* Course ICS4U
-* Teacher: Mrs. McCaffery
-* Date: June 7th 2023
-* Description: Generic class to create AI models to train
-*/
-
 //import dependencies
 import Replicate from 'replicate';
 import fs from 'fs';
@@ -15,9 +7,11 @@ import { spawnSync } from 'node:child_process';
 import fetch from 'node-fetch';
 
 /**
- * Generic training class to train a custom AI Model
+ * Generic training class to train a stable-diffusion AI Model
  * @author Alexandru Stan
- * @since June 2023
+ * @course ICS4U
+ * @teacher Mrs. McCaffery
+ * @since June 7th 2023
  */
 class aiModel {
 
@@ -179,7 +173,7 @@ class aiModel {
                 //convert the JSON object into a string to be passed through
                 body: JSON.stringify({
 
-                    input: bodyInput,
+                    'input': bodyInput,
                     'model': `${this.#username}/${this.#model}`,
                     'trainer_version': `${this.#trainerVersion}`
 
@@ -204,7 +198,7 @@ class aiModel {
     /**
      * Checks on the status of training calls
      * @param  {...string} trainingId 
-     * @returns array of the training IDs
+     * @returns objec of the training IDs and their status
      */
     checkTrainingStatus(...trainingId) {
 
@@ -224,7 +218,10 @@ class aiModel {
 
             //fetch the status of the training call through the API
             fetch(trainingUrl, headers).then(response => {
+
+                //make sure that the api call wen through properly, then store the status of teh training call
                 if(response.ok) statuses.id = response.status;
+
             })
 
         } //end for-loop
@@ -233,7 +230,35 @@ class aiModel {
 
     } //end checkTrainingStatus
 
-   //TODO: Create a function to generate an image based on the user positive prompt and negative prompt
+    /**
+     * Generate a prediciton using the stable-diffusion model
+     * @param {string} prompt what the generated prediction is to look like
+     * @param {string} negativePrompt what is to be left out of the generated prediction
+     * @returns an object with the prompt, neagtive prompt, and the link to the generaterd image
+     */
+    async generate(prompt = '', negativePrompt = '') {
+
+        //run the model with the parameters that the user specificed
+        const output = await this.#replicate.run(
+            `${this.#username}/${this.#model}:${this.#modelVersion}`,
+            {
+                input: {
+                    prompt: prompt,
+                    negative_prompt: negativePrompt
+                }
+            }
+        );
+
+        //return an object with the data used to generate the image + the image
+        return {
+
+            link: [output],
+            prompt: prompt,
+            negative_prompt: negativePrompt
+
+        } 
+
+    } //end createPrediction()
 
     /**
      * Executes a bash command 
