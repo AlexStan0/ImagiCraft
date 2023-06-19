@@ -13,7 +13,7 @@ import fetch from 'node-fetch';
  * @teacher Mrs. McCaffery
  * @since June 7th 2023
  */
-class aiModel {
+class Model {
 
     //declare global variables for the class
     #apiKey;
@@ -51,7 +51,7 @@ class aiModel {
 
     //setter for the apiKey (a getter is not added as it has to remain private)
     setApiKey = newKey => this.#apiKey = newKey;
-    
+
     //getter and setter for the ai-model
     setModel = newModel => this.#model = newModel;
     getModel = () => this.#model;
@@ -86,7 +86,7 @@ class aiModel {
      * @param {string} filePath paths to the zip files to be uploaded
      * @returns {object} serving data for the API 
      */
-    uploadData = (filePath, instancePrompt, classPrompt) => {
+    uploadData(filePath, instancePrompt, classPrompt) {
 
         //create a variable that points to the sh script
         const scriptPath = 'upload.sh'
@@ -135,7 +135,7 @@ class aiModel {
      * @param {string} [servingData.classPrompt] REQUIRED, prompt that describes the data set
      * @returns an array of the training URLS to check the status of the training call with 
      */
-    trainModel(maxTrainSteps = 2000, ...servingData) {
+    train(maxTrainSteps = 2000, ...servingData) {
 
         //create an array to store the id's of each training call
         const trainingIds = [];
@@ -173,7 +173,7 @@ class aiModel {
                 //convert the JSON object into a string to be passed through
                 body: JSON.stringify({
 
-                    'input': bodyInput,
+                    input: bodyInput,
                     'model': `${this.#username}/${this.#model}`,
                     'trainer_version': `${this.#trainerVersion}`
 
@@ -197,8 +197,8 @@ class aiModel {
 
     /**
      * Checks on the status of training calls
-     * @param  {...string} trainingId 
-     * @returns objec of the training IDs and their status
+     * @param  {...string} trainingId
+     * @returns array of the training IDs
      */
     checkTrainingStatus(...trainingId) {
 
@@ -208,7 +208,7 @@ class aiModel {
         //loop through all the training id's 
         for(const id in trainingId) {
 
-             //store the location of the training call
+            //store the location of the training call
             const trainingUrl = `https://dreambooth-api-experimental.replicate.com/v1/trainings/${id}`;
 
             //store the header options
@@ -218,10 +218,7 @@ class aiModel {
 
             //fetch the status of the training call through the API
             fetch(trainingUrl, headers).then(response => {
-
-                //make sure that the api call wen through properly, then store the status of teh training call
                 if(response.ok) statuses.id = response.status;
-
             })
 
         } //end for-loop
@@ -229,36 +226,6 @@ class aiModel {
         return statuses;
 
     } //end checkTrainingStatus
-
-    /**
-     * Generate a prediciton using the stable-diffusion model
-     * @param {string} prompt what the generated prediction is to look like
-     * @param {string} negativePrompt what is to be left out of the generated prediction
-     * @returns an object with the prompt, neagtive prompt, and the link to the generaterd image
-     */
-    async generate(prompt = '', negativePrompt = '') {
-
-        //run the model with the parameters that the user specificed
-        const output = await this.#replicate.run(
-            `${this.#username}/${this.#model}:${this.#modelVersion}`,
-            {
-                input: {
-                    prompt: prompt,
-                    negative_prompt: negativePrompt
-                }
-            }
-        );
-
-        //return an object with the data used to generate the image + the image
-        return {
-
-            link: [output],
-            prompt: prompt,
-            negative_prompt: negativePrompt
-
-        } 
-
-    } //end createPrediction()
 
     /**
      * Executes a bash command 
@@ -300,4 +267,4 @@ class aiModel {
 
 } //end trainingModel
 
-export default aiModel;
+export default Model;
