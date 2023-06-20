@@ -1,16 +1,27 @@
+/**
+ * Brings together all of the components to render in a single component
+ * @author Alexandru Stan
+ * @course ICS4U
+ * @teacher Mrs. McCaffery
+ * @since June 2023
+ */
+
+//import dependencies
 import React from 'react';
 import Header from './Header.jsx';
 
-import Model from 'model';
+//import assets
+import banner from '../assets/ForestLake.jpg';
 
 function App() {
 
-    const imageUrl = 'https://replicate.delivery/pbxt/513Bp8913Z7AKtfOmUmNsfJiUT8p1cXY6zPxJ6eQ38ZwtpPiA/out-0.png';
-    const title = "Generate Wonderful Art";
-    const height = 512;
-    const width = 512;
+    const title = "Imageflix";
 
-    return <Header imageUrl='no' websiteTitle={title} height={height} width={width} />
+    return (
+        <>
+            <Header imageSrc={banner} websiteTitle={title} />
+        </>
+    )
 
 } //end App()
 

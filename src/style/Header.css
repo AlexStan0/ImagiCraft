@@ -1,3 +1,8 @@
 /* 
     CSS style file for the Header component located in /components/Header.jsx
 */
+
+.banner_image {
+    height: 60vh;
+    width: 65vw;
+}

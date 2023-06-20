@@ -1,30 +1,38 @@
 
 /**
- * Header component that contains a landscape work of art 
+ * Header component of the website
  * @author Alexandru Stan
  * @course ICS4U
  * @teacher Mrs. McCaffery
- * @since June 7th 2023
+ * @since June 2023
  */
 
 //import dependencies
 import React from 'react';
+import '../style/Header.css';
 
 /**
- * 
- * @param {*} param0 
- * @returns 
+ * Renders the header part of the website using provided props
+ * @param {object} props options passed through in named arguments
+ * @param {string} [props.imageSrc] REQUIRED path (either link of file) to the banner image
+ * @param {string} [props.websiteTitle] REQUIRED title of the website, will be displayed in the top left corner
+ * @returns the HTML code for the header
  */
-function Header({ imageUrl, websiteTitle, width, height }) {
+function Header(props) {
+
+    //destructure the props object into its seperate variables
+    const { imageSrc, websiteTitle } = props;
 
     return (
-        <>
+
+        <div className="global_header">
             <h2>{websiteTitle}</h2>
             <div>
-                <img url={imageUrl} width={width} height={height} />
+                <img src={imageSrc} alt="banner" className="banner_image" />
                 <div className="center-text">Generate Wonderful Art</div>
             </div>
-        </>
+        </div>
+
     );
 
 } //end Header()
