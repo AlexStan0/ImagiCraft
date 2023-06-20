@@ -5,7 +5,7 @@
  * @author Alexandru Stan
  * @course ICS4U
  * @teacher Mrs. McCaffery
- * @since June 7th 2023
+ * @since June 2023
  */
 
 //import dependencies
@@ -18,7 +18,7 @@ import 'dotenv/config';
 const apiKey = process.env.TOKEN;
 const username = "alexstan0";
 const modelName = "stable-diffusion-4";
-const modelVersion = "ecefcd352be5d778ed0d79b4a96f95bf543418d1c6979220753330529e4773fe";
+const modelVersion = "187d2ae3532a4991def03d0abadfe2dab60f8f07e8fe1a9cd13be58300a5d878";
 const trainerVersion = "d5e058608f43886b9620a8fbb1501853b8cbae4f45c857a014011c86ee614ffb";
 
 //create an instance of the model

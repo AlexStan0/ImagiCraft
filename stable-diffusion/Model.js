@@ -11,7 +11,7 @@ import fetch from 'node-fetch';
  * @author Alexandru Stan
  * @course ICS4U
  * @teacher Mrs. McCaffery
- * @since June 7th 2023
+ * @since June 2023
  */
 class Model {
 
@@ -26,7 +26,7 @@ class Model {
     /**
      * Constructor for an AI class that allows the remote training of a model.
      * NOTE: The model provided must be a stable-diffusion model (1.5, or 2.1) to be 
-     * able to use the dreambooth API calls;
+     * able to use the dreambooth API calls
      * 
      * 
      * @param {string} apiKey replicate.com auth token 
@@ -218,14 +218,61 @@ class Model {
 
             //fetch the status of the training call through the API
             fetch(trainingUrl, headers).then(response => {
-                if(response.ok) statuses.id = response.status;
+                if(response.ok) statuses[response.id] = response.status;
             })
 
         } //end for-loop
 
         return statuses;
 
-    } //end checkTrainingStatus
+    } //end checkTrainingStatus()
+
+    /**
+     * Generates an image using the defined model
+     * NOTE: The max image resolution is 768x1024 or 1024x768 due to memory constrains
+     * 
+     * @param {string} prompt prompt to generate image based off of
+     * @param {string} negativePrompt prompt of what to not include in the image
+     * @param {number} width width of the generated image
+     * @param {number} height height of the generaredt image
+     * @returns object with info about the image + a link to the image
+     */
+    async generate(prompt, negativePrompt, width, height) {
+
+        //make sure that the height and the width fit in the specified restricitons
+        if(!(height <= 1024 && width <= 768) || !(width <= 1024 && height <= 768)) throw new Error("please enter a resolution below the maximum resolution of 768x1024");
+
+        //store the location for what model to create a prediction from
+        const modelLocation = `${this.#username}/${this.#model}:${this.#modelVersion}`;
+
+        //store the input options for the creation call
+        const inputOptions = {
+            prompt: prompt,
+            negative_prompt: negativePrompt,
+            width: width,
+            height: height
+        }
+
+        //call the model and generate 
+        const output = await this.#replicate.run(
+            modelLocation,
+            {
+                input: inputOptions
+            }
+        );
+
+        //create an object with the image info
+        const imageInfo = {
+            imageLink: output[0],
+            prompt: prompt,
+            negativePrompt: negativePrompt,
+            height: height,
+            width: width
+        }
+
+        return imageInfo
+
+    } //end generate()
 
     /**
      * Executes a bash command 
