@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header.jsx';
 
-// import Model from '../../stable-diffusion/Model.js';
+import Model from 'model';
 
 function App() {
 

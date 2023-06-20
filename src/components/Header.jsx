@@ -10,11 +10,16 @@
 //import dependencies
 import React from 'react';
 
+/**
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 function Header({ imageUrl, websiteTitle, width, height }) {
 
     return (
         <>
-            <p>{websiteTitle}</p>
+            <h2>{websiteTitle}</h2>
             <div>
                 <img url={imageUrl} width={width} height={height} />
                 <div className="center-text">Generate Wonderful Art</div>
