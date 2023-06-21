@@ -109,7 +109,7 @@ class Model {
         this.#writeToFile(scriptPath, commands);
 
         //allocate executable permissions to the file
-        this.#executeCommand('chmod +x ~/forknife-v5/stable-diffusion/upload.sh');
+        this.#executeCommand('chmod +x ./' + scriptPath);
 
         //run the upload script
         let scriptOutput = this.#executeCommand("./upload.sh");
