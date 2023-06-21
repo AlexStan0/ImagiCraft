@@ -7,7 +7,6 @@
  */
 
 //import dependencies
-import React from 'react';
 import Header from './Header.jsx';
 
 //import assets
@@ -16,13 +15,19 @@ import banner from '../assets/banner.jpg'
 function App() {
 
     //store the title of the website
-    const title = "ImageCraft";
+    const websiteTitle = "ImageCraft";
 
     return (
+
         <>
-            <Header imageSrc={banner} websiteTitle={title} />
+
+            <Header imageSrc={banner} websiteTitle={websiteTitle} />
+
+            
+
         </>
-    )
+
+    );
 
 } //end App()
 

@@ -8,7 +8,6 @@
  */
 
 //import dependencies
-import React from 'react';
 import '../style/Header.css';
 
 /**
@@ -25,10 +24,13 @@ function Header(props) {
 
     return (
 
+        //store the lower elements in a global header div
         <div className="header">
 
+            {/* Website title extracted from the props */}
             <h1 id="title">{websiteTitle}</h1>
 
+            {/* Root element that hold the header banner and the text it contains */}
             <div className="banner_container rounded_corners">
 
                 <img src={imageSrc} alt="banner" className="banner_image rounded_corners" />
