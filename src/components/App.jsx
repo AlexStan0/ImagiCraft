@@ -11,11 +11,12 @@ import React from 'react';
 import Header from './Header.jsx';
 
 //import assets
-import banner from '../assets/ForestLake.jpg';
+import banner from '../assets/banner.jpg'
 
 function App() {
 
-    const title = "Imageflix";
+    //store the title of the website
+    const title = "ImageCraft";
 
     return (
         <>

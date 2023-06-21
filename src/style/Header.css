@@ -1,8 +1,73 @@
 /* 
     CSS style file for the Header component located in /components/Header.jsx
+    Author: Alexandru Stan
+    Since: June 2023
+
 */
 
-.banner_image {
-    height: 60vh;
-    width: 65vw;
+body, html {
+    
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height:100%;
+
 }
+
+.rounder_corners {
+
+    border-radius: 1px;
+
+}
+
+.header {
+
+    background-color: #edebe6;
+    padding-top: 0;
+    height: 100%;
+
+}
+
+#title {
+
+    padding-top: 3vh;
+    padding-left: 10vw;
+    margin: 0;
+    font-size: 1.7em;
+    font-family: 'Rubik', monospace;
+    font-weight: 100;
+    padding-bottom: 2vh;
+
+}
+
+.banner_container {
+
+    display: flex;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    position: relative;
+    color: white;
+
+}
+
+.banner_image {
+
+    height: 65vh;
+    width: 80vw;
+    padding-top: 4vh;
+    padding-bottom: 4vh;
+
+}
+
+.center_text {
+
+    font-family: 'Rubik', monospace;
+    font-size: 4em;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: black 0px 0px 2px;
+
+} 

@@ -25,12 +25,17 @@ function Header(props) {
 
     return (
 
-        <div className="global_header">
-            <h2>{websiteTitle}</h2>
-            <div>
-                <img src={imageSrc} alt="banner" className="banner_image" />
-                <div className="center-text">Generate Wonderful Art</div>
+        <div className="header">
+
+            <h1 id="title">{websiteTitle}</h1>
+
+            <div className="banner_container rounded_corners">
+
+                <img src={imageSrc} alt="banner" className="banner_image rounded_corners" />
+                <div className="center_text">Generate Wonderful Art</div>
+
             </div>
+
         </div>
 
     );
