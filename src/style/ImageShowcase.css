@@ -1,0 +1,14 @@
+/*
+    CSS style file for the Image Showcase Component
+    Author: Alexandru Stan
+    Since: June 2023
+    Teacher: Mrs. McCaffery
+    Course: ICS4U
+*/
+
+.image_container {
+
+    display: flex;
+    justify-content: center;
+
+}
