@@ -15,12 +15,6 @@ body, html {
 
 }
 
-.rounder_corners {
-
-    border-radius: 1px;
-
-}
-
 .header {
 
     background-color: #edebe6;
@@ -45,8 +39,6 @@ body, html {
 
     display: flex;
     justify-content: center;
-    position: relative;
-    text-align: center;
     position: relative;
     color: white;
 

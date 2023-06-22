@@ -31,9 +31,9 @@ function Header(props) {
             <h1 id="title">{websiteTitle}</h1>
 
             {/* Root element that hold the header banner and the text it contains */}
-            <div className="banner_container rounded_corners">
+            <div className="banner_container">
 
-                <img src={imageSrc} alt="banner" className="banner_image rounded_corners" />
+                <img src={imageSrc} alt="banner" className="banner_image" />
                 <div className="center_text">Generate Wonderful Art</div>
 
             </div>

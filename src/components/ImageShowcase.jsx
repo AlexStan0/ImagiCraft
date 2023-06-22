@@ -21,9 +21,16 @@ function ImageShowcase(props) {
 
     return (
 
-        <div className="image_container" >
+        <div className="gallery">
 
             <img src={imageSrc} alt="gallery-piece" className="showcase_image" />
+
+            <div className="prompt_container">
+
+                <span className="prompt top">Prompt: {imagePrompt}</span><br /><br /> 
+                <span className="prompt bottom">Negative Prompt: {imageNegativePrompt}</span>
+
+            </div>
 
         </div>
 
@@ -31,3 +38,5 @@ function ImageShowcase(props) {
 
 
 } //end GeneratedImage
+
+export default ImageShowcase

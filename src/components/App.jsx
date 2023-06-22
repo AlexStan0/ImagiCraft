@@ -8,9 +8,10 @@
 
 //import dependencies
 import Header from './Header.jsx';
+import ImageShowcase from './ImageShowcase.jsx';
 
 //import assets
-import banner from '../assets/banner.jpg'
+import banner from '../assets/banner.jpg';
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
         <>
 
             <Header imageSrc={banner} websiteTitle={websiteTitle} />
-
+            <ImageShowcase imageSrc={banner} imagePrompt={'width: 21vw ;'} imageNegativePrompt="negative prompt" />
             
 
         </>
