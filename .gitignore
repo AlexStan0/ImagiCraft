@@ -12,7 +12,7 @@
 /build
 
 # api keys
-/src/node-backend/.env
+/node-backend/.env
 
 # misc
 .DS_Store
