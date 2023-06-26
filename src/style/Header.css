@@ -26,7 +26,7 @@ body, html {
 #title {
 
     padding-top: 3vh;
-    padding-left: 10vw;
+    padding-left: 12.5vw;
     margin: 0;
     font-size: 1.7em;
     font-family: 'Rubik', monospace;
@@ -47,7 +47,7 @@ body, html {
 .banner_image {
 
     height: 65vh;
-    width: 80vw;
+    width: 75vw;
     padding-top: 4vh;
     padding-bottom: 4vh;
 

@@ -240,7 +240,7 @@ class Model {
     async generate(prompt, negativePrompt, width, height) {
 
         //make sure that the height and the width fit in the specified restricitons
-        if(!(height <= 1024 && width <= 768) || !(width <= 1024 && height <= 768)) throw new Error("please enter a resolution below the maximum resolution of 768x1024");
+        //if(!(height <= 1024 && width <= 768) || !(width <= 1024 && height <= 768)) throw new Error("please enter a resolution below the maximum resolution of 768x1024");
 
         //store the location for what model to create a prediction from
         const modelLocation = `${this.#username}/${this.#model}:${this.#modelVersion}`;

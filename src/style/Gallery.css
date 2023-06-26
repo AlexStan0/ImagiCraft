@@ -1,0 +1,106 @@
+/*
+    CSS style file for the Image Showcase Component
+    Author: Alexandru Stan
+    Since: June 2023
+    Teacher: Mrs. McCaffery
+    Course: ICS4U
+*/
+
+html, body {
+
+    height: 100%;
+    width: 100%;
+    margin: 0
+
+}
+
+#showcase_title {
+
+    font-family: 'Rubik', monospace;
+    margin-top: 10vh;
+    margin-left: 12vw;
+    font-size: 3em;
+    font-weight: 100;
+
+}
+
+.gallery {
+
+    margin-top: 5vh;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.showcase {
+
+    display: flex;
+    justify-content: center;
+
+}
+
+.showcase_image {
+
+    height: 60vh;
+    width: 24.5vw;
+    border-radius: 10px;
+    z-index: -1;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+
+}
+
+.image_prompt_container {
+
+    position:absolute;
+    background-color: #0C0F17;
+    width: 20vw;
+    max-width: 20vw;
+    height: 12.5vh;
+    max-height: 12.5vh;
+    transform: translate(0%, 320%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    overflow: hidden;
+    opacity: 0;
+
+}
+
+.image_prompt_title {
+
+    color: white;
+    margin-top: -20%;
+    font-family: 'Rubik', monospace;
+    margin-left: 1vw;
+
+}
+
+.image_prompt {
+
+    color: white;
+    font-family: 'Rubik', monospace;
+    font-size: 1.3em;
+    font-weight: 100;
+    margin-left: -5%;
+    margin-top: 5%;
+    
+}
+
+.showcase:hover > .image_prompt_container {
+
+    opacity: 1;
+    animation-name: showPrompt;
+    animation-duration: 0.5s;
+
+}
+
+@keyframes showPrompt {
+
+    from { transform: translate(0%, 340%); }
+    50% { transform: translate(0%, 330%) !important; }
+    to { transform: translate(0%, 320%) }
+
+}

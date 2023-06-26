@@ -1,0 +1,34 @@
+/*
+    CSS style file for the Footer Component
+    Author: Alexandru Stan
+    Since: June 2023
+    Teacher: Mrs. McCaffery
+    Course: ICS4U
+*/
+
+html, body {
+
+    height: 100%;
+    width: 100%;
+    margin: 0
+
+}
+
+.footer {
+
+    margin-top: 3vh;
+    height: 14vh;
+    width: 100%;
+    background-color: #edebe6;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.image {
+
+    height: 7vh;
+
+}
