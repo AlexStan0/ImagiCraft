@@ -8,24 +8,42 @@
 
 //import dependencies
 import Header from './Header.jsx';
-import ImageShowcase from './ImageShowcase.jsx';
+import Gallery from './Gallery.jsx';
+import Generate from './Generate.jsx';
 
 //import assets
 import banner from '../assets/banner.jpg';
 
+/**
+ * Stitches all of the components of the website to send to the DOM to render
+ * @returns a render of all the website components
+ */
 function App() {
 
     //store the title of the website
     const websiteTitle = "ImageCraft";
+
+    //store the sources for the images
+    const gallerySources = [
+        banner,
+        banner,
+        banner
+    ]
+
+    const imageTitles = [
+        'medieval, cool, scary',
+        'medieval, cool, scary',
+        'medieval, cool, scary',
+    ]
 
     return (
 
         <>
 
             <Header imageSrc={banner} websiteTitle={websiteTitle} />
-            <ImageShowcase imageSrc={banner} imagePrompt={'width: 21vw ;'} imageNegativePrompt="negative prompt" />
-            
-
+            <Gallery imageSrcs={gallerySources} imagePrompts={imageTitles} />
+            <Generate />
+        
         </>
 
     );

@@ -12,7 +12,7 @@
 /build
 
 # api keys
-/src/ai-model/.env
+/src/node-backend/.env
 
 # misc
 .DS_Store

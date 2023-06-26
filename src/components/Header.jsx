@@ -14,7 +14,7 @@ import '../style/Header.css';
  * Renders the header part of the website using provided props
  * @param {object} props options passed through in named arguments
  * @param {string} [props.imageSrc] REQUIRED path (either link of file) to the banner image
- * @param {string} [props.websiteTitle] REQUIRED title of the website, will be displayed in the top left corner
+ * @param {string} [props.websiteTitle] REQUIRED  title of the website, will be displayed in the top left corner
  * @returns the HTML code for the header
  */
 function Header(props) {
